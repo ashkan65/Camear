@@ -43,8 +43,8 @@ Once you have compiled the sources run the following command to calibrate the in
 
 ### Or just run:######################################
 ```bash
-./calibrate -w 9 -h 6 -n 100 -s 8.1555555 -d "../../RecordFrames/build/images/" -i "left" -o "cam_left.yml" -e "jpg"
-./calibrate -w 9 -h 6 -n 100 -s 8.1555555 -d "../../RecordFrames/build/images/" -i "right" -o "cam_right.yml" -e "jpg"
+./calibrate -w 19 -h 19 -n 100 -s 8.1555555 -d "../../RecordFrames/build/images/" -i "left" -o "cam_left.yml" -e "jpg"
+./calibrate -w 19 -h 19 -n 100 -s 8.1555555 -d "../../RecordFrames/build/images/" -i "right" -o "cam_right.yml" -e "jpg"
 ```
 
 ### Stereo calibration for extrinisics
