@@ -122,8 +122,8 @@ int main(int argc, char const **argv)
   cout << "Calibration error: " << computeReprojectionErrors(object_points, image_points, rvecs, tvecs, K, D) << endl;
 
   FileStorage fs(out_file, FileStorage::WRITE);
-  fs << "K" << K;
-  fs << "D" << D;
+  fs << "Camera Matrix" << K;
+  fs << "Dist Coeffs " << D;
   fs << "board_width" << board_width;
   fs << "board_height" << board_height;
   fs << "square_size" << square_size;
