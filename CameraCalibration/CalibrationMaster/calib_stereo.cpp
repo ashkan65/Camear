@@ -121,10 +121,10 @@ int main(int argc, char const *argv[])
   Mat K1, K2, R, F, E;
   Vec3d T;
   Mat D1, D2;
-  fsl["K"] >> K1;
-  fsr["K"] >> K2;
-  fsl["D"] >> D1;
-  fsr["D"] >> D2;
+  fsl["Camera Matrix"] >> K1;
+  fsr["Camera Matrix"] >> K2;
+  fsl["Dist Coeffs"] >> D1;
+  fsr["Dist Coeffs"] >> D2;
   int flag = 0;
   flag |= cv::CALIB_FIX_INTRINSIC;
   
@@ -133,14 +133,14 @@ int main(int argc, char const *argv[])
   stereoCalibrate(object_points, left_img_points, right_img_points, K1, D1, K2, D2, img1.size(), R, T, E, F);
 
   cv::FileStorage fs1(out_file, cv::FileStorage::WRITE);
-  fs1 << "K1" << K1;
-  fs1 << "K2" << K2;
-  fs1 << "D1" << D1;
-  fs1 << "D2" << D2;
-  fs1 << "R" << R;
-  fs1 << "T" << T;
-  fs1 << "E" << E;
-  fs1 << "F" << F;
+  fs1 << "Camera Matrix1" << K1;
+  fs1 << "Camera Matrix2" << K2;
+  fs1 << "Dist Coeffs1" << D1;
+  fs1 << "Dist Coeffs2" << D2;
+  fs1 << "Rotation Matrix" << R;
+  fs1 << "translation Vector" << T;
+  fs1 << "Essential Matrix" << E;
+  fs1 << "Fundamental Matrix" << F;
   
   printf("Done Calibration\n");
 
@@ -149,11 +149,11 @@ int main(int argc, char const *argv[])
   cv::Mat R1, R2, P1, P2, Q;
   stereoRectify(K1, D1, K2, D2, img1.size(), R, T, R1, R2, P1, P2, Q);
 
-  fs1 << "R1" << R1;
-  fs1 << "R2" << R2;
-  fs1 << "P1" << P1;
-  fs1 << "P2" << P2;
-  fs1 << "Q" << Q;
+  fs1 << "Rectification Matrix1" << R1;
+  fs1 << "Rectification Matrix2" << R2;
+  fs1 << "Projection Matrix1" << P1;
+  fs1 << "Projection Matrix2" << P2;
+  fs1 << "Disparity matrix" << Q;
 
   printf("Done Rectification\n");
 

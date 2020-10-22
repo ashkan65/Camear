@@ -123,7 +123,7 @@ int main(int argc, char const **argv)
 
   FileStorage fs(out_file, FileStorage::WRITE);
   fs << "Camera Matrix" << K;
-  fs << "Dist Coeffs " << D;
+  fs << "Dist Coeffs" << D;
   fs << "board_width" << board_width;
   fs << "board_height" << board_height;
   fs << "square_size" << square_size;

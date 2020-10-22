@@ -61,17 +61,21 @@ int main () {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    cv::FileStorage cal_file("../../../CalibrationMaster/build/cam_stereo.yml", cv::FileStorage::READ);
-    cv::Mat cameraMatrix1, cameraMatrix2, Projection1, Projection2, Rect1, Rect2; 
-    cal_file["K1"] >> cameraMatrix1;
-    cal_file["K2"] >> cameraMatrix2;
-    cal_file["P1"] >> Projection1;
-    cal_file["P2"] >> Projection2;
-    cal_file["R1"] >> Rect1;
-    cal_file["R2"] >> Rect2;
+    cv::FileStorage cal_file("../../../CalibrationMaster/build/cam_stereo.yml", cv::FileStorage::READ); // This is the location for the calibration file!
+    cv::Mat cameraMatrix1, cameraMatrix2, Projection1, Projection2, Rect1, Rect2, distCoeffs1, distCoeffs2; 
+    cal_file["Camera Matrix1"] >> cameraMatrix1;
+    cal_file["Camera Matrix2"] >> cameraMatrix2;
+    cal_file["Projection Matrix1"] >> Projection1;
+    cal_file["Projection Matrix2"] >> Projection2;
+    cal_file["Rectification Matrix1"] >> Rect1;
+    cal_file["Rectification Matrix2"] >> Rect2;
+    cal_file["Dist Coeffs1"] >> distCoeffs1;
+    cal_file["Dist Coeffs2"] >> distCoeffs2;
 // std::cout<< Rect2;
     cv::Mat pnts3D(1,1,CV_64F);
-	//////////////////////////////////////////////
+    cv::Mat point3D(1,1,CV_64F);
+
+    //////////////////////////////////////////////
 	TelerobCamera cam1(pCameras[0]);
 	TelerobCamera cam2(pCameras[1]);
 
@@ -88,11 +92,22 @@ int main () {
         Pt2 = cam2.GetTargetPose();
         cv::Mat Taret1 = (cv::Mat_<double>(2,1) << Pt1.x, Pt1.y);
         cv::Mat Taret2 = (cv::Mat_<double>(2,1) << Pt2.x, Pt2.y);
-
+        // undistortPoints(Taret1, Taret1, cameraMatrix1, distCoeffs1);
+        // undistortPoints(Taret2, Taret2, cameraMatrix2, distCoeffs2);
         cv::triangulatePoints(Projection1,Projection2,Taret1,Taret2,pnts3D);
 
         // std::cout << cam1.GetTargetPose();
-        std::cout << pnts3D<<std::endl;
+
+        // std::cout << pnts3D[3]<<std::endl;
+
+        
+        point3D = pnts3D;
+
+        point3D.at<double>(0, 0) = point3D.at<double>(0, 0)/pnts3D.at<double>(3, 0);
+        point3D.at<double>(1, 0) = point3D.at<double>(1, 0)/pnts3D.at<double>(3, 0);
+        point3D.at<double>(2, 0) = point3D.at<double>(2, 0)/pnts3D.at<double>(3, 0);
+        // m_history.addTriangulatedPoint(point3D);
+        std::cout << point3D<<std::endl;
         cv::imshow("image1", cam1.GetCurrentFrame()); 
         // cv::imshow("Object Detection1", cam1.GetCurrentFilteredFrame());
         // cv::imshow("Object Detection2", cam2.GetCurrentFilteredFrame());
