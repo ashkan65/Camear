@@ -9,7 +9,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/core/types.hpp>
-#include <opencv2/viz.hpp>
+// #include <opencv2/viz.hpp>
 // #include "print.h"  // This has the functions to print the camera and library version. TODO: move it somewhere else: 
 
 
@@ -92,21 +92,15 @@ int main () {
         Pt2 = cam2.GetTargetPose();
         cv::Mat Taret1 = (cv::Mat_<double>(2,1) << Pt1.x, Pt1.y);
         cv::Mat Taret2 = (cv::Mat_<double>(2,1) << Pt2.x, Pt2.y);
-        // undistortPoints(Taret1, Taret1, cameraMatrix1, distCoeffs1);
-        // undistortPoints(Taret2, Taret2, cameraMatrix2, distCoeffs2);
-        cv::triangulatePoints(Projection1,Projection2,Taret1,Taret2,pnts3D);
-
-        // std::cout << cam1.GetTargetPose();
-
-        // std::cout << pnts3D[3]<<std::endl;
-
         
-        point3D = pnts3D;
 
+		cv::triangulatePoints(Projection1,Projection2,Taret1,Taret2,pnts3D);
+        point3D = pnts3D;
         point3D.at<double>(0, 0) = point3D.at<double>(0, 0)/pnts3D.at<double>(3, 0);
         point3D.at<double>(1, 0) = point3D.at<double>(1, 0)/pnts3D.at<double>(3, 0);
         point3D.at<double>(2, 0) = point3D.at<double>(2, 0)/pnts3D.at<double>(3, 0);
-        // m_history.addTriangulatedPoint(point3D);
+        std::cout << point3D<<std::endl;
+
         std::cout << point3D<<std::endl;
         cv::imshow("image1", cam1.GetCurrentFrame()); 
         // cv::imshow("Object Detection1", cam1.GetCurrentFilteredFrame());
